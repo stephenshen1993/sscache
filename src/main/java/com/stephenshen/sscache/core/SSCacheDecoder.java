@@ -1,4 +1,4 @@
-package com.stephenshen.sscache;
+package com.stephenshen.sscache.core;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
