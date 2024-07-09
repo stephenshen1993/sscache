@@ -27,73 +27,36 @@ public class SSCacheHandler extends SimpleChannelInboundHandler<String> {
         System.out.println("SSCacheHandler => " + String.join(",", args));
         String cmd = args[2].toUpperCase();
 
-        if ("COMMAND".equals(cmd)) {
-            writeByteBuf(ctx, "*2"
-                    + CRLF + "$7"
-                    + CRLF + "COMMAND"
-                    + CRLF + "$4"
-                    + CRLF + "PING"
-                    + CRLF);
-        } else if ("PING".equals(cmd)) {
-            simpleString(ctx, args.length >= 5 ? args[4] : "PONG");
-        } else if ("INFO".equals(cmd)) {
-            bulkString(ctx, INFO);
-        } else if ("SET".equals(cmd)) {
-            cache.set(args[4], args[6]);
-            simpleString(ctx, OK);
-        } else if ("GET".equals(cmd)) {
-            String value = cache.get(args[4]);
-            bulkString(ctx, value);
-        } else if ("STRLEN".equals(cmd)) {
-            String value = cache.get(args[4]);
-            integer(ctx, value == null ? 0 : value.length());
-        } else if ("DEL".equals(cmd)) {
-            int len = (args.length - 3) / 2;
-            String[] keys = new String[len];
-            for (int i = 0; i < len; i++) {
-                keys[i] = args[4 + i * 2];
-            }
-            integer(ctx, cache.del(keys));
-        } else if ("EXISTS".equals(cmd)) {
-            int len = (args.length - 3) / 2;
-            String[] keys = new String[len];
-            for (int i = 0; i < len; i++) {
-                keys[i] = args[4 + i * 2];
-            }
-            integer(ctx, cache.exists(keys));
-        } else if ("MGET".equals(cmd)) {
-            int len = (args.length - 3) / 2;
-            String[] keys = new String[len];
-            for (int i = 0; i < len; i++) {
-                keys[i] = args[4 + i * 2];
-            }
-            array(ctx, cache.mget(keys));
-        } else if ("MSET".equals(cmd)) {
-            int len = (args.length - 3) / 4;
-            String[] keys = new String[len];
-            String[] values = new String[len];
-            for (int i = 0; i < len; i++) {
-                keys[i] = args[4 + i * 2];
-                values[i] = args[6 + i * 2];
-            }
-            cache.mset(keys, values);
-            simpleString(ctx, OK);
-        } else if ("INCR".equals(cmd)) {
-            String key = args[4];
-            try {
-                integer(ctx, cache.incr(key));
-            } catch (NumberFormatException nfe) {
-                error(ctx, "NFE " + key + " value[" + cache.get(key) + "] is not a integer.");
-            }
-        } else if ("DECR".equals(cmd)) {
-            String key = args[4];
-            try {
-                integer(ctx, cache.decr(key));
-            } catch (NumberFormatException nfe) {
-                error(ctx, "NFE " + key + " value[" + cache.get(key) + "] is not a integer.");
-            }
+        Command command = Commands.get(cmd);
+        if (command != null) {
+            Reply<?> reply = command.exec(cache, args);
+            System.out.println("CMD[" + cmd+ "] => " + reply.getType() + " => " + reply.getValue());
+            replyContext(ctx, reply);
         } else {
-            simpleString(ctx, OK);
+            Reply<?> reply = Reply.error("ERR unsupported command '" + cmd + "'");
+            replyContext(ctx, reply);
+        }
+    }
+
+    private void replyContext(ChannelHandlerContext ctx, Reply<?> reply) {
+        switch (reply.getType()) {
+            case INT:
+                integer(ctx, (Integer) reply.getValue());
+                break;
+            case ERROR:
+                error(ctx, (String) reply.getValue());
+                break;
+            case SIMPLE_STRING:
+                simpleString(ctx, (String) reply.getValue());
+                break;
+            case BULK_STRING:
+                bulkString(ctx, (String) reply.getValue());
+                break;
+            case ARRAY:
+                array(ctx, (String[]) reply.getValue());
+                break;
+            default:
+                simpleString(ctx, OK);
         }
     }
 
