@@ -1,26 +1,24 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.list;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Lrang command.
+ * lindex command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class LrangCommand implements Command {
+public class LindexCommand implements Command {
     @Override
     public String name() {
-        return "LRANG";
+        return "LINDEX";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
         String key = getKey(args);
-        String[] params = getParamsNoKey(args);
-        int start = Integer.parseInt(params[0]);
-        int end = Integer.parseInt(params[1]);
-        return Reply.array(cache.lrang(key, start, end));
+        int index = Integer.parseInt(getVal(args));
+        return Reply.bulkString(cache.lindex(key, index));
     }
 }

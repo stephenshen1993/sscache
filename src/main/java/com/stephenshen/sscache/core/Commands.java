@@ -1,6 +1,11 @@
 package com.stephenshen.sscache.core;
 
-import com.stephenshen.sscache.command.*;
+import com.stephenshen.sscache.command.common.CommandCommand;
+import com.stephenshen.sscache.command.common.InfoCommand;
+import com.stephenshen.sscache.command.common.PingCommand;
+import com.stephenshen.sscache.command.list.*;
+import com.stephenshen.sscache.command.set.*;
+import com.stephenshen.sscache.command.string.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -27,13 +32,14 @@ public class Commands {
         // string
         register(new SetCommand());
         register(new GetCommand());
-        register(new StrLenCommand());
+        register(new StrlenCommand());
         register(new DelCommand());
         register(new ExistsCommand());
         register(new IncrCommand());
         register(new DecrCommand());
         register(new MsetCommand());
         register(new MgetCommand());
+
 
         // list
         // Lpush, Rpush, Lpop, Rpop, Llen, Lindex, Lrange
@@ -44,6 +50,21 @@ public class Commands {
         register(new LlenCommand());
         register(new LindexCommand());
         register(new LrangCommand());
+
+
+        // set
+        register(new SaddCommand());
+        register(new SmembersCommand());
+        register(new SremCommand());
+        register(new ScardCommand());
+        register(new SpopCommand());
+        register(new SismemberCommand());
+
+
+        //hash
+
+
+        //zset
     }
 
     public static void register(Command command) {

@@ -1,23 +1,23 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.set;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * StrLen command.
+ * scard command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class StrLenCommand implements Command {
+public class ScardCommand implements Command {
     @Override
     public String name() {
-        return "STRLEN";
+        return "SCARD";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
         String key = getKey(args);
-        return Reply.integer(cache.strlen(key));
+        return Reply.integer(cache.scard(key));
     }
 }

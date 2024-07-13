@@ -1,24 +1,24 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.set;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Lpush command.
+ * sadd command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class LpushCommand implements Command {
+public class SaddCommand implements Command {
     @Override
     public String name() {
-        return "LPUSH";
+        return "SADD";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
         String key = getKey(args);
         String[] vals = getParamsNoKey(args);
-        return Reply.integer(cache.lpush(key, vals));
+        return Reply.integer(cache.sadd(key, vals));
     }
 }

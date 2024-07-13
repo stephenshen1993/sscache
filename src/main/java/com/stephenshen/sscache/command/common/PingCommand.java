@@ -1,25 +1,22 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.common;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Mset command.
+ * Ping command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class MsetCommand implements Command {
+public class PingCommand implements Command {
     @Override
     public String name() {
-        return "MSET";
+        return "PING";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
-        String[] keys = getKeys(args);
-        String[] vals = getVals(args);
-        cache.mset(keys, vals);
-        return Reply.string(OK);
+        return Reply.string(args.length >= 5 ? args[4] : "PONG");
     }
 }

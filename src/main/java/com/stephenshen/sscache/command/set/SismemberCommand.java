@@ -1,24 +1,24 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.set;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Lindex command.
+ * sismember command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class LindexCommand implements Command {
+public class SismemberCommand implements Command {
     @Override
     public String name() {
-        return "LINDEX";
+        return "SISMEMBER";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
         String key = getKey(args);
-        int index = Integer.parseInt(getVal(args));
-        return Reply.bulkString(cache.lindex(key, index));
+        String val = getVal(args);
+        return Reply.integer(cache.sismember(key, val));
     }
 }

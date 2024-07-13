@@ -1,23 +1,24 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.list;
 
 import com.stephenshen.sscache.core.Command;
-import com.stephenshen.sscache.core.Commands;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Command command.
+ * rpush command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class CommandCommand implements Command {
+public class RpushCommand implements Command {
     @Override
     public String name() {
-        return "COMMAND";
+        return "RPUSH";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
-        return Reply.array(Commands.getCommandNames());
+        String key = getKey(args);
+        String[] vals = getParamsNoKey(args);
+        return Reply.integer(cache.rpush(key, vals));
     }
 }

@@ -1,25 +1,26 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.list;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Set command.
+ * lrang command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class SetCommand implements Command {
+public class LrangCommand implements Command {
     @Override
     public String name() {
-        return "SET";
+        return "LRANG";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
         String key = getKey(args);
-        String val = getVal(args);
-        cache.set(key, val);
-        return Reply.string(OK);
+        String[] params = getParamsNoKey(args);
+        int start = Integer.parseInt(params[0]);
+        int end = Integer.parseInt(params[1]);
+        return Reply.array(cache.lrang(key, start, end));
     }
 }

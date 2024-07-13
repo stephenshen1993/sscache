@@ -1,25 +1,23 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.common;
 
 import com.stephenshen.sscache.core.Command;
+import com.stephenshen.sscache.core.Commands;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Del command.
+ * Command command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class DelCommand implements Command {
+public class CommandCommand implements Command {
     @Override
     public String name() {
-        return "DEL";
+        return "COMMAND";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
-        String[] keys = getParams(args);
-        return Reply.integer(cache.del(keys));
+        return Reply.array(Commands.getCommandNames());
     }
-
-
 }

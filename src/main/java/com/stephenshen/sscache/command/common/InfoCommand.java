@@ -1,4 +1,4 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.common;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;

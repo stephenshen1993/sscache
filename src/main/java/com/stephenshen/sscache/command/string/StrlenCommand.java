@@ -1,22 +1,23 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.string;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Ping command.
+ * StrLen command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class PingCommand implements Command {
+public class StrlenCommand implements Command {
     @Override
     public String name() {
-        return "PING";
+        return "STRLEN";
     }
 
     @Override
     public Reply<?> exec(SSCache cache, String[] args) {
-        return Reply.string(args.length >= 5 ? args[4] : "PONG");
+        String key = getKey(args);
+        return Reply.integer(cache.strlen(key));
     }
 }

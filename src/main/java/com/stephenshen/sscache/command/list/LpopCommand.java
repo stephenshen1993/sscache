@@ -1,18 +1,18 @@
-package com.stephenshen.sscache.command;
+package com.stephenshen.sscache.command.list;
 
 import com.stephenshen.sscache.core.Command;
 import com.stephenshen.sscache.core.Reply;
 import com.stephenshen.sscache.core.SSCache;
 
 /**
- * Rpop command.
+ * lpop command.
  * @author stephenshen
  * @date 2024/7/8 07:28:38
  */
-public class RpopCommand implements Command {
+public class LpopCommand implements Command {
     @Override
     public String name() {
-        return "RPOP";
+        return "LPOP";
     }
 
     @Override
@@ -24,7 +24,7 @@ public class RpopCommand implements Command {
             count = Integer.parseInt(val);
             return Reply.array(cache.lpop(key, count));
         }
-        String[] lpop = cache.rpop(key, count);
+        String[] lpop = cache.lpop(key, count);
         return Reply.bulkString(lpop == null ? null : lpop[0]);
     }
 }
