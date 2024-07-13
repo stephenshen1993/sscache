@@ -7,6 +7,7 @@ import com.stephenshen.sscache.command.hash.*;
 import com.stephenshen.sscache.command.list.*;
 import com.stephenshen.sscache.command.set.*;
 import com.stephenshen.sscache.command.string.*;
+import com.stephenshen.sscache.command.zset.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -73,6 +74,12 @@ public class Commands {
 
 
         //zset
+        register(new ZaddCommand());
+        register(new ZcardCommand());
+        register(new ZscoreCommand());
+        register(new ZremCommand());
+        register(new ZrankCommand());
+        register(new ZcountCommand());
     }
 
     public static void register(Command command) {
