@@ -253,7 +253,7 @@ public class SSCache {
         for (int i = 0; i < hkeys.length; i++) {
             exist.put(hkeys[i], hvals[i]);
         }
-        return hkeys.length;
+        return (int) Arrays.stream(hkeys).distinct().count();
     }
 
     public String hget(String key, String hkey) {
